@@ -3,6 +3,11 @@ from sqlalchemy.orm import DeclarativeBase
 
 class Base(DeclarativeBase): pass
 
+smtp_serv = 'smtp.*'
+source_mail = 'mail@something'
+smtp_port = 465
+smtp_serv_pass = 'superpassword'
+
 server_port = 5001
 mysql_user = 'user'
 mysql_passw = 'pass'
