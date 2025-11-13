@@ -12,6 +12,7 @@ from threading import Thread
 from models.Candidate import Candidate
 from models.User import User
 from classes.EmailCodeSender import EmailCodeSender
+from app_data.definitions import smtp_serv, source_mail, smtp_port, smtp_serv_pass
 
 class SignUp(ControllerUnauth):
     # подтверждение учетной записи
@@ -123,10 +124,10 @@ class SignUp(ControllerUnauth):
         
     def send_confirm_code(self, service, confirm_code):
         sender = EmailCodeSender(
-            'smtp.mail.ru',
-            'fish@mail.ru',
-            465,
-            'super_password',
+            smtp_serv,
+            source_mail,
+            smtp_port,
+            smtp_serv_pass
         )
         res = sender.send(
             service,
