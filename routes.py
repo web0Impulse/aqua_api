@@ -3,6 +3,7 @@ from controllers.server_version import ServerVersion
 from controllers.device_state import DeviceState
 from controllers.signup import SignUp
 from app_data.definitions import mysql_connection
+from controllers.user_data import UserData
 
 def InitRoutes(api):
     additional_params = {
@@ -14,4 +15,6 @@ def InitRoutes(api):
     api.add_resource(DeviceState, '/api/v1/status',
                      resource_class_kwargs=additional_params)
     api.add_resource(SignUp, '/api/v1/signup',
-                     resource_class_kwargs=additional_params)    
+                     resource_class_kwargs=additional_params)
+    api.add_resource(UserData, '/api/v1/user/<int:user_id>',
+                     resource_class_kwargs=additional_params)
