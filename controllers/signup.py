@@ -13,6 +13,7 @@ from models.Candidate import Candidate
 from models.User import User
 from classes.EmailCodeSender import EmailCodeSender
 from app_data.definitions import smtp_serv, source_mail, smtp_port, smtp_serv_pass
+from app_data.email_verification_template import VERIFICATION_EMAIL_HTML_TEMPLATE
 
 class SignUp(ControllerUnauth):
     # подтверждение учетной записи
@@ -75,7 +76,7 @@ class SignUp(ControllerUnauth):
                                 location='json')
             parser.add_argument('password', type=str, required=True,
                                 location='json')
-            parser.add_argument('name', type=str, required=True,
+            parser.add_argument('firstname', type=str, required=True,
                                 location='json')
             parser.add_argument('surname', type=str, required=False,
                                 location='json')
@@ -102,7 +103,7 @@ class SignUp(ControllerUnauth):
                         ERROR.CONFIRMATION_CODE_SEND_ERROR
                         ),200
                 candidate = Candidate(
-                    firstname = args['name'],
+                    firstname = args['firstname'],
                     surname = args['surname'],
                     middlename = args['middlename'],
                     phone = args['phone'],
@@ -116,7 +117,7 @@ class SignUp(ControllerUnauth):
                 )
                 db.add(candidate)
                 db.commit()
-            return self.make_response_str(ERROR.OK), 200
+            return self.make_response_str(ERROR.OK), 201
         except (SQLAlchemyError, Exception) as e:
             response, code = self.handle_exception(e)
             return response, code
@@ -132,6 +133,7 @@ class SignUp(ControllerUnauth):
         res = sender.send(
             service,
             'Подтверждение регистрации на AquaService',
-            f'Код подтверждения регистрации: {confirm_code}'
+            VERIFICATION_EMAIL_HTML_TEMPLATE.format(confirm_code=confirm_code),
+            True
         )
         return res
