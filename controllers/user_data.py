@@ -13,16 +13,26 @@ class UserData(ControllerBase):
             with Session(autoflush=False, bind=self._connection) as db:
                 # Получаем токен обращающегося пользователя
                 # TODO: вынести в родительский класс
-                auth_header = request.headers.get('Authorization')
-                parts = auth_header.split()
-                token = sha256(parts[1].encode('utf-8')).hexdigest()
+                
+                # auth_header = request.headers.get('Authorization')
+                # parts = auth_header.split()
+                # token = sha256(parts[1].encode('utf-8')).hexdigest()
+                # # Ищем пользователя по этому токену
+                # current_user = db.query(User) \
+                #     .filter(
+                #         User.token_hash == token
+                #     ).first()
+                # auth_header = request.headers.get('Authorization')
+                # parts = auth_header.split()
+                # token = sha256(parts[1].encode('utf-8')).hexdigest()
                 # Ищем пользователя по этому токену
                 current_user = db.query(User) \
                     .filter(
-                        User.token_hash == token
+                        User.id == self._user_id
                     ).first()
                 # Проверка на то является ли пользователь администратором
-                if current_user.serialize['role']['role_id'] == 1:
+                if current_user.role.role_id == 1:
+                #if current_user.serialize['role']['role_id'] == 1:
                     # Все ОК -> Ищем пользователя по переданному ИД
                     user = db.query(User) \
                         .filter(

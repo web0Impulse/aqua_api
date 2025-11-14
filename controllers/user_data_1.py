@@ -14,13 +14,17 @@ class UserData1(ControllerBase):
             with Session(autoflush=False, bind=self._connection) as db:
                 # Получаем токен обращающегося пользователя
                 # TODO: вынести в родительский класс
-                auth_header = request.headers.get('Authorization')
-                parts = auth_header.split()
-                token = sha256(parts[1].encode('utf-8')).hexdigest()
-                # Ищем пользователя по этому токену
+                # auth_header = request.headers.get('Authorization')
+                # parts = auth_header.split()
+                # token = sha256(parts[1].encode('utf-8')).hexdigest()
+                # # Ищем пользователя по этому токену
+                # current_user = db.query(User) \
+                #     .filter(
+                #         User.token_hash == token
+                #     ).first()
                 current_user = db.query(User) \
                     .filter(
-                        User.token_hash == token
+                        User.id == self._user_id
                     ).first()
                 # Возвращаем
                 user_data = current_user.serialize
@@ -57,15 +61,18 @@ class UserData1(ControllerBase):
             with Session(autoflush=False, bind=self._connection) as db:
                 # Получаем токен обращающегося пользователя
                 # TODO: вынести в родительский класс
-                auth_header = request.headers.get('Authorization')
-                parts = auth_header.split()
-                token = sha256(parts[1].encode('utf-8')).hexdigest()
-                # Ищем пользователя по этому токену
+                # auth_header = request.headers.get('Authorization')
+                # parts = auth_header.split()
+                # token = sha256(parts[1].encode('utf-8')).hexdigest()
+                # # Ищем пользователя по этому токену
+                # current_user = db.query(User) \
+                #     .filter(
+                #         User.token_hash == token
+                #     ).first()
                 current_user = db.query(User) \
                     .filter(
-                        User.token_hash == token
+                        User.id == self._user_id
                     ).first()
-                
                 # Записываем новые данные
                 if args['firstname'] != None:
                     current_user.firstname = args['firstname']
