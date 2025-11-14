@@ -1,5 +1,6 @@
 __pycache__/
 aqua_env/
+venv/
 github_token.txt
 definitions.py
 token.txt
