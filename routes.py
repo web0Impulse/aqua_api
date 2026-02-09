@@ -5,6 +5,7 @@ from controllers.signup import SignUp
 from app_data.definitions import mysql_connection
 from controllers.user_data import UserData
 from controllers.user_data_1 import UserData1
+from controllers.signin import SignIn
 
 def InitRoutes(api):
     additional_params = {
@@ -20,4 +21,6 @@ def InitRoutes(api):
     api.add_resource(UserData, '/api/v1/user/<int:user_id>',
                      resource_class_kwargs=additional_params)
     api.add_resource(UserData1, '/api/v1/me',
+                     resource_class_kwargs=additional_params)
+    api.add_resource(SignIn, '/api/v1/signin',
                      resource_class_kwargs=additional_params)
