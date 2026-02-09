@@ -6,3 +6,4 @@ definitions.py
 token.txt
 flask_session/*
 dbimages/*
+images/*
