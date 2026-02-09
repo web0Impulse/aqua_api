@@ -2,11 +2,15 @@ from flask_restful import reqparse
 from classes.errors import ERROR
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
-from flask import request
+from flask import request, current_app
 from models.User import User
 from controllers.controller_base import ControllerBase
 from hashlib import sha256
 from classes.custom_error import CustomError
+from app_data.helpers import allowed_file
+from os import path, sep
+from werkzeug.utils import secure_filename
+from werkzeug.exceptions import RequestEntityTooLarge
 
 class UserData1(ControllerBase):
     def get(self):
@@ -106,4 +110,23 @@ class UserData1(ControllerBase):
                 ), 200
         except (SQLAlchemyError, Exception) as e:
             response, code = self.handle_exception(e)
+            return response, code
+        
+    def patch(self):
+        try:
+            if 'file' not in request.files:
+                return self.make_response_str(ERROR.OBJ_NOT_FOUND), 200
+            file = request.files['file']
+            if file.filename == '':
+                return self.make_response_str(ERROR.OBJ_NOT_FOUND), 404
+            if file and allowed_file(file.filename):
+                filename, _ = path.splitext(secure_filename(file.filename))
+                filename = path.join(current_app.config['UPLOAD_FOLDER'], 'user_' + str(self._user_id) + '.jpg')
+                file.save(filename)
+                return self.make_response_str(ERROR.OK), 200
+            return self.make_response_str(ERROR.UNSUPPORTED_FORMAT), 200
+        except RequestEntityTooLarge as e:
+            return self.make_response_str(ERROR.CONTENT_TOO_LARGE), 413
+        except Exception as e:
+            response, code  = self.handle_exceptions(e)
             return response, code
