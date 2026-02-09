@@ -128,5 +128,5 @@ class UserData1(ControllerBase):
         except RequestEntityTooLarge as e:
             return self.make_response_str(ERROR.CONTENT_TOO_LARGE), 413
         except Exception as e:
-            response, code  = self.handle_exceptions(e)
+            response, code  = self.handle_exception(e)
             return response, code
