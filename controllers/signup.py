@@ -2,6 +2,7 @@ from controllers.controller_unauth import ControllerUnauth
 from hashlib import sha256
 import secrets
 from flask_restful import reqparse
+from flask import session
 from classes.errors import ERROR
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
@@ -60,6 +61,7 @@ class SignUp(ControllerUnauth):
                     db.add(user)
                     db.delete(candidate)
                     db.commit()
+                    session['user'] = user.id
                     data = {'token':token}
                     return self.make_response_str(ERROR.OK, data), 200
         except (SQLAlchemyError, Exception) as e:
