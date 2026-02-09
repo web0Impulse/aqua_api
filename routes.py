@@ -6,6 +6,7 @@ from app_data.definitions import mysql_connection
 from controllers.user_data import UserData
 from controllers.user_data_1 import UserData1
 from controllers.signin import SignIn
+from controllers.get_video import GetVideo
 
 def InitRoutes(api):
     additional_params = {
@@ -23,4 +24,6 @@ def InitRoutes(api):
     api.add_resource(UserData1, '/api/v1/me',
                      resource_class_kwargs=additional_params)
     api.add_resource(SignIn, '/api/v1/signin',
+                     resource_class_kwargs=additional_params)
+    api.add_resource(GetVideo, '/api/v1/get_video', 
                      resource_class_kwargs=additional_params)
