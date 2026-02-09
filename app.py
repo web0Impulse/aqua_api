@@ -1,4 +1,5 @@
-from flask import Flask
+from flask import Flask, session
+from flask_session import Session
 from flask_restful import Api
 from routes import InitRoutes
 from os import environ
@@ -7,6 +8,10 @@ from app_data.definitions import server_port
 
 app = Flask(__name__)
 api = Api(app)
+
+SESSION_TYPE = 'filesystem'
+app.config.from_object(__name__)
+Session(app)
 
 InitRoutes(api)
 
