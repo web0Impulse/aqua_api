@@ -4,3 +4,4 @@ venv/
 github_token.txt
 definitions.py
 token.txt
+flask_session/*
