@@ -7,7 +7,7 @@ import secrets
 from hashlib import sha256
 from datetime import datetime
 from models.User import User
-from flask import session
+from flask import session, request
 
 class SignIn(ControllerUnauth):
 
@@ -17,7 +17,6 @@ class SignIn(ControllerUnauth):
             parser.add_argument('phone', required=True, type=str,location='json') 
             parser.add_argument('password', required=True, type=str,location='json')
             args = parser.parse_args()
-
             with Session(autoflush=False, bind=self._connection) as db:
                 #оздаем объект Person для добавления в бд
                 user = db.query(User)\
@@ -41,5 +40,5 @@ class SignIn(ControllerUnauth):
         except MultipleResultsFound as e:
            return self.make_response_str(ERROR.INTEGRITY_ERROR), 500
         except (SQLAlchemyError, Exception) as e:
-            response, code  = self.handle_exceptions(e)
+            response, code  = self.handle_exception(e)
             return response, code
