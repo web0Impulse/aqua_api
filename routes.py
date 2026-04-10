@@ -7,6 +7,7 @@ from controllers.user_data import UserData
 from controllers.user_data_1 import UserData1
 from controllers.signin import SignIn
 from controllers.get_video import GetVideo
+from controllers.logout import LogOut
 
 def InitRoutes(api):
     additional_params = {
@@ -27,3 +28,4 @@ def InitRoutes(api):
                      resource_class_kwargs=additional_params)
     api.add_resource(GetVideo, '/api/v1/get_video', 
                      resource_class_kwargs=additional_params)
+    api.add_resource(LogOut, '/api/v1/logout')
