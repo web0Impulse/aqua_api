@@ -18,7 +18,6 @@ class SignIn(ControllerUnauth):
             parser.add_argument('password', required=True, type=str,location='json')
             args = parser.parse_args()
             with Session(autoflush=False, bind=self._connection) as db:
-                #оздаем объект Person для добавления в бд
                 user = db.query(User)\
                     .filter(
                         User.phone == args['phone']
